@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GymBooking.Migrations
 {
-    public partial class GymClasses : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,7 +49,7 @@ namespace GymBooking.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GymClass",
+                name: "GymClasses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -61,7 +61,7 @@ namespace GymBooking.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GymClass", x => x.Id);
+                    table.PrimaryKey("PK_GymClasses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,7 +171,7 @@ namespace GymBooking.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserGymClass",
+                name: "AppUserGyms",
                 columns: table => new
                 {
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -179,24 +179,24 @@ namespace GymBooking.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserGymClass", x => new { x.ApplicationUserId, x.GymClassId });
+                    table.PrimaryKey("PK_AppUserGyms", x => new { x.ApplicationUserId, x.GymClassId });
                     table.ForeignKey(
-                        name: "FK_ApplicationUserGymClass_AspNetUsers_ApplicationUserId",
+                        name: "FK_AppUserGyms_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserGymClass_GymClass_GymClassId",
+                        name: "FK_AppUserGyms_GymClasses_GymClassId",
                         column: x => x.GymClassId,
-                        principalTable: "GymClass",
+                        principalTable: "GymClasses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserGymClass_GymClassId",
-                table: "ApplicationUserGymClass",
+                name: "IX_AppUserGyms_GymClassId",
+                table: "AppUserGyms",
                 column: "GymClassId");
 
             migrationBuilder.CreateIndex(
@@ -242,7 +242,7 @@ namespace GymBooking.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationUserGymClass");
+                name: "AppUserGyms");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -260,7 +260,7 @@ namespace GymBooking.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "GymClass");
+                name: "GymClasses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

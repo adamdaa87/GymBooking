@@ -12,14 +12,17 @@ namespace GymBooking.Data
         {
         }
 
-        public DbSet<GymClass> GymClass { get; set; }
-        public DbSet<ApplicationUserGymClass> ApplicationUserGymClass { get; set; }
+        public DbSet<GymClass> GymClasses => Set<GymClass>();
+        public DbSet<ApplicationUserGymClass> AppUserGyms => Set<ApplicationUserGymClass>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<ApplicationUserGymClass>().HasKey(a => new { a.ApplicationUserId, a.GymClassId });
+            builder.Entity<ApplicationUserGymClass>()
+                   .HasKey(a => new { a.ApplicationUserId, a.GymClassId });
+
+            builder.Entity<GymClass>().HasQueryFilter(g => g.StartTime > DateTime.Now);
         }
 
     }
