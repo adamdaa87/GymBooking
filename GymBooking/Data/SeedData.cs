@@ -18,7 +18,7 @@ namespace GymBooking.Data
             ArgumentNullException.ThrowIfNull(nameof(services));
             // if (services is null) throw new ArgumentNullException(nameof(services));
 
-            //if (db.GymClasses.Any()) return;
+            if (db.GymClasses.Any()) return;
 
             roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             ArgumentNullException.ThrowIfNull(roleManager);
