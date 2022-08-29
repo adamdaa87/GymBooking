@@ -10,6 +10,7 @@ using GymBooking.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using GymBooking.Extensions;
 
 namespace GymBooking.Controllers
 {
@@ -25,13 +26,14 @@ namespace GymBooking.Controllers
         }
 
         // GET: GymClasses
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await db.GymClasses.ToListAsync());
                            
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> BookingToggle(int? id)
         {
             if (id is null) return BadRequest();
@@ -90,7 +92,12 @@ namespace GymBooking.Controllers
         // GET: GymClasses/Create
         public IActionResult Create()
         {
-            return View();
+            return Request.IsAjax()? PartialView("CreatePartial"): View();
+        }
+
+        public IActionResult FetchForm()
+        {
+            return PartialView("CreatePartial");
         }
 
         // POST: GymClasses/Create
@@ -104,8 +111,14 @@ namespace GymBooking.Controllers
             {
                 db.Add(gymClass);
                 await db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Request.IsAjax()? PartialView("GymClass", gymClass): RedirectToAction(nameof(Index));
             }
+            //check if Ajax!
+            if (Request.IsAjax())
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+
             return View(gymClass);
         }
 

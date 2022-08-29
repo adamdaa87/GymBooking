@@ -1,7 +1,9 @@
 using GymBooking.Data;
 using GymBooking.Extensions;
 using GymBooking.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymBooking
@@ -29,6 +31,14 @@ namespace GymBooking
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            builder.Services.AddControllersWithViews(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             builder.Services.AddControllersWithViews();
 
